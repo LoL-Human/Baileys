@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "postinstall": "tsc",
+    "postinstall": "yarn install && tsc",
     "prepare": "tsc",
     "build:all": "tsc && typedoc",
     "build:docs": "typedoc",
