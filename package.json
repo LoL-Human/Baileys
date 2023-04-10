@@ -1,6 +1,6 @@
 {
   "name": "@adiwajshing/baileys",
-  "version": "5.0.0",
+  "version": "5.0.0-aqul",
   "description": "WhatsApp API",
   "homepage": "https://github.com/adiwajshing/Baileys",
   "main": "lib/index.js",
@@ -18,7 +18,6 @@
   ],
   "scripts": {
     "test": "jest",
-    "postinstall": "tsc",
     "prepare": "tsc",
     "build:all": "tsc && typedoc",
     "build:docs": "typedoc",
