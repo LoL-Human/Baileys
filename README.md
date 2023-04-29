@@ -30,7 +30,9 @@ temporarily unavailable
 
 Use the edge version (no guarantee of stability, but latest fixes + features)
 ```
-yarn add github:WhiskeySockets/Baileys
+yarn add github:LoL-Human/Baileys
+or
+npm install github:LoL-Human/Baileys
 ```
 
 Then import your code using:
