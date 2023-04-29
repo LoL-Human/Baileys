@@ -8,7 +8,7 @@ import { aggregateMessageKeysNotFromMe, assertMediaContent, bindWaitForEvent, de
 import { getUrlInfo } from '../Utils/link-preview'
 import { BinaryNode, BinaryNodeAttributes, JidWithDevice, S_WHATSAPP_NET, areJidsSameUser, getBinaryNodeChild, getBinaryNodeChildren, isJidGroup, isJidUser, jidDecode, jidEncode, jidNormalizedUser } from '../WABinary'
 import { makeGroupsSocket } from './groups'
-import ListType = proto.Message.ListMessage.ListType;
+
 import ListType = proto.Message.ListMessage.ListType;
 
 export const makeMessagesSocket = (config: SocketConfig) => {
