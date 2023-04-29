@@ -6,8 +6,9 @@ import { DEFAULT_CACHE_TTLS, WA_DEFAULT_EPHEMERAL } from '../Defaults'
 import { AnyMessageContent, MediaConnInfo, MessageReceiptType, MessageRelayOptions, MiscMessageGenerationOptions, SocketConfig, WAMessageKey } from '../Types'
 import { aggregateMessageKeysNotFromMe, assertMediaContent, bindWaitForEvent, decryptMediaRetryData, encodeSignedDeviceIdentity, encodeWAMessage, encryptMediaRetryRequest, extractDeviceJids, generateMessageID, generateWAMessage, getStatusCodeForMediaRetry, getUrlFromDirectPath, getWAUploadToServer, parseAndInjectE2ESessions, unixTimestampSeconds } from '../Utils'
 import { getUrlInfo } from '../Utils/link-preview'
-import { areJidsSameUser, BinaryNode, BinaryNodeAttributes, getBinaryNodeChild, getBinaryNodeChildren, isJidGroup, isJidUser, jidDecode, jidEncode, jidNormalizedUser, JidWithDevice, S_WHATSAPP_NET } from '../WABinary'
+import { BinaryNode, BinaryNodeAttributes, JidWithDevice, S_WHATSAPP_NET, areJidsSameUser, getBinaryNodeChild, getBinaryNodeChildren, isJidGroup, isJidUser, jidDecode, jidEncode, jidNormalizedUser } from '../WABinary'
 import { makeGroupsSocket } from './groups'
+import ListType = proto.Message.ListMessage.ListType;
 import ListType = proto.Message.ListMessage.ListType;
 
 export const makeMessagesSocket = (config: SocketConfig) => {
@@ -505,7 +506,7 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 				}
 
 				const buttonType = getButtonType(message)
-				if(buttonType){
+				if(buttonType) {
 					(stanza.content as BinaryNode[]).push({
 						tag: 'biz',
 						attrs: { },
@@ -576,7 +577,7 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 	}
 
 	const getButtonArgs = (message: proto.IMessage): BinaryNode['attrs'] => {
-		if(message.templateMessage){
+		if(message.templateMessage) {
 			// TODO: Add attributes
 			return {}
 		} else if(message.listMessage) {
@@ -589,7 +590,7 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 			return {};
 		}
 	}
-	
+
 	const getPrivacyTokens = async(jids: string[]) => {
 		const t = unixTimestampSeconds().toString()
 		const result = await query({
