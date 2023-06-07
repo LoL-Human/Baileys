@@ -335,8 +335,8 @@ export const makeChatsSocket = (config: SocketConfig) => {
 		}
 	}
 
-	const cleanDirtyBits = async(type: 'account_sync' | 'groups', fromTimestamp?: number | string) => {
-		logger.info({ fromTimestamp }, 'clean dirty bits ' + type)
+	const updateAccountSyncTimestamp = async(fromTimestamp: number | string) => {
+		logger.info({ fromTimestamp }, 'requesting account sync')
 		await sendNode({
 			tag: 'iq',
 			attrs: {
@@ -349,8 +349,8 @@ export const makeChatsSocket = (config: SocketConfig) => {
 				{
 					tag: 'clean',
 					attrs: {
-						type,
-						...(fromTimestamp ? { timestamp: fromTimestamp.toString() } : null),
+						type: 'account_sync',
+						timestamp: fromTimestamp.toString(),
 					}
 				}
 			]
@@ -920,16 +920,13 @@ export const makeChatsSocket = (config: SocketConfig) => {
 			if(attrs.timestamp) {
 				let { lastAccountSyncTimestamp } = authState.creds
 				if(lastAccountSyncTimestamp) {
-					await cleanDirtyBits('account_sync', lastAccountSyncTimestamp)
+					await updateAccountSyncTimestamp(lastAccountSyncTimestamp)
 				}
 
 				lastAccountSyncTimestamp = +attrs.timestamp
 				ev.emit('creds.update', { lastAccountSyncTimestamp })
 			}
 
-			break
-		case 'groups':
-			// handled in groups.ts
 			break
 		default:
 			logger.info({ node }, 'received unknown sync')
@@ -956,7 +953,7 @@ export const makeChatsSocket = (config: SocketConfig) => {
 			// if we don't have the app state key
 			// we keep buffering events until we finally have
 			// the key and can sync the messages
-			if(!authState.creds?.myAppStateKeyId && !config.mobile) {
+			if(!authState.creds?.myAppStateKeyId) {
 				ev.buffer()
 				needToFlushWithAppStateSync = true
 			}
@@ -990,7 +987,6 @@ export const makeChatsSocket = (config: SocketConfig) => {
 		getBusinessProfile,
 		resyncAppState,
 		chatModify,
-		cleanDirtyBits,
 		addChatLabel,
 		removeChatLabel,
 		addMessageLabel,
